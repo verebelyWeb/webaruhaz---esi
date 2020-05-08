@@ -1,0 +1,6 @@
+{
+    "userName" : "root",
+    "password"  : "1024",
+    "hostName"  : "localhost",
+    "database"  : "webshop" 
+}
