@@ -31,7 +31,7 @@
                 <a href="index.php?c=orders&termekId=<?= $termek['id'] ?>" class="btn btn-rng">Lekér</a>
             </td>
             <td>
-                <a href="index.php?c=modyfyTermek&termekId=<?= $termek['id'] ?>" class="btn btn-grn">Módosítás</a>
+                <a href="index.php?c=modyfyTermekForm&termekId=<?= $termek['id'] ?>" class="btn btn-grn">Módosítás</a>
             </td>
         </tr>
     <?php endforeach ?>

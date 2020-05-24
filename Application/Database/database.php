@@ -1,6 +1,99 @@
 <?php
 
-function deleteOrder($pdo, $orderId)
+function newOrderInsert( PDO $pdo, $order)
+{
+    extract($order);
+
+    $smt = $pdo->prepare('INSERT INTO `rendelesek` VALUES
+        ((SELECT MAX(id) + 1 FROM ( SELECT * FROM`rendelesek`) t),:datum,:termekId, :db)
+    ');
+
+    $currDate = date("Y-m-d");
+
+    $smt->bindParam(':datum',    $currDate);
+    $smt->bindParam(':termekId', $termekId);
+    $smt->bindParam(':db',       $count);
+   
+
+    try 
+    {
+        if (!$smt->execute())
+        {
+            throw new PDOException($smt->errorInfo()[2]);            
+        }
+
+        return true;     
+    } 
+    catch (PDOException $e) 
+    {    
+        var_dump($e->getMessage());
+        die;
+        return false;
+    }
+}
+
+function updateProduct( PDO $pdo, $product)
+{
+    extract($product);
+
+    $smt = $pdo->prepare('UPDATE `termekek` SET  
+                 `megnevezes`   = :megnevezes,
+                 `feszultseg`   = :feszultseg,  
+                 `teljesitmeny` = :teljesitmeny,
+                 `foglalat`     = :foglalat,
+                 `elettartam`   = :elettartam,
+                 `ar`           = :ar
+                 WHERE `id` = :id');
+
+    $smt->bindParam(':megnevezes',      $megnevezes);
+    $smt->bindParam(':feszultseg',      $feszultseg);
+    $smt->bindParam(':teljesitmeny',    $teljesitmeny);
+    $smt->bindParam(':foglalat',        $foglalat);
+    $smt->bindParam(':elettartam',      $elettartam);
+    $smt->bindParam(':ar',              $ar);
+    $smt->bindParam(':id',              $id);
+
+    try 
+    {
+        if (!$smt->execute())
+        {
+            throw new Exception($smt->errorInfo()[2]);            
+        }
+
+        return true;     
+    } 
+    catch (Exception $e) 
+    {    
+        return false;
+    }
+}
+
+function getProduct( PDO $pdo, $productId)
+{
+    $smt = $pdo->prepare('SELECT * FROM `termekek` WHERE `id` LIKE :productId');
+
+    $smt->bindParam(':productId', $productId);
+
+    try 
+    {
+        if (!$smt->execute())
+        {
+            throw new Exception($smt->errorInfo()[2]);            
+        }
+
+        return $smt->fetchAll(PDO::FETCH_ASSOC)[0];     
+    } 
+    catch (Exception $e) 
+    {    
+        return false;
+    }
+}
+
+
+
+
+
+function deleteOrder( PDO $pdo, $orderId)
 {
     $smt = $pdo->prepare('DELETE FROM `rendelesek` WHERE `id` LIKE :orderId');
 
